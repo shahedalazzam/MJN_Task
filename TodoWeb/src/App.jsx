@@ -1,11 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskList from "./components/TaskList";
 import { MdDarkMode, MdSunny } from "react-icons/md";
+import axios from "axios";
 
 function App() {
+
+
+
   const [tasks, setTasks] = useState([]);
   const [darkTheme, setDarkTheme] = useState(false);
+
+
+  // const [title, setTitle] = useState([]);
+
+  useEffect(() => {
+    const fetchTitleData = async () => {
+      try {
+        const response = await axios.get("https://task-project-c6jd.onrender.com/item/").catch((err) => {
+          if (err && err.response) {
+            console.log("first");
+            console.log("Error: ", err.response.data.error);
+          }
+        });
+
+        if (response && response.data) {
+          setTasks(response.data.data.toDos);
+        }
+      } catch (error) {
+        console.error("Error fetching item data:", error);
+      }
+    };
+    fetchTitleData();
+  }, []);
+
 
   const addTask = (title) => {
     const newTask = { id: Date.now(), title, completed: false };
@@ -13,11 +41,30 @@ function App() {
   };
 
   const editTask = (id, title) => {
+    try {
+      await axios.patch(`https://dream-wedding.onrender.com/admin/update/${userId}`, {
+        FullName: newFullName,
+
+      });
+    } catch (error) {
+      console.error('Error updating username:', error);
+    }
+    
     setTasks(tasks.map((task) => (task.id === id ? { ...task, title } : task)));
+
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const deleteTask =async (id) => {
+
+    try {
+      const response =await axios.delete(`https://task-project-c6jd.onrender.com/item/delete/${id}`);
+      setTasks(response.data.data.newToDos);
+    } catch (error) {
+      console.log(error);
+    }
+
+
+
   };
 
   const toggleCompleted = (id) => {
@@ -52,7 +99,6 @@ function App() {
       >
         <div className=" w-full flex items-center justify-between">
           <h1 className=" uppercase text-4xl font-bold text-white tracking-widest mb-4 md:text-3xl">
-            {/* Task Manager */}
             My Tasks
           </h1>
 
@@ -88,7 +134,7 @@ function App() {
             } flex items-center justify-between text-gray-500 border-b`}
           >
             <p className=" text-gray-500 px-2 py-3">
-              {getRemainingTasks().length} tasks left{" "}
+              {getRemainingTasks().length} tasks left
             </p>
             <button onClick={clearTasks}>Clear all tasks</button>
           </div>
@@ -101,8 +147,8 @@ function App() {
               onToggleCompleted={toggleCompleted}
             />
           ) : (
-            <div className=" w-full h-[80%] flex items-center justify-center overflow-hidden">
-              <p className=" text-gray-500 text-center z-10">Empty task</p>
+            <div className="w-full h-[80%] flex items-center justify-center overflow-hidden">
+              <p className="text-gray-500 text-center z-10">Empty task</p>
             </div>
           )}
         </div>

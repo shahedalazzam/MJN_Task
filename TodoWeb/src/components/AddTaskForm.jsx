@@ -8,19 +8,17 @@ const AddTaskForm = ({ onAddTask, darkTheme }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (title.trim()) {
-      try {
-        const response = await axios.post("https://task-project-c6jd.onrender.com/item/add", { title: title.trim });
-        if (response.status === 201) {
-          onAddTask(title.trim);
-          setTitle("");
-          setError("");
-        } else {
-          setError(response.data.message);
-        }
-      } catch (error) {
-        setError("Error creating task");
+    try {
+      const response = await axios.post("https://task-project-c6jd.onrender.com/item/add", { title });
+      if (response.status === 201) {
+        onAddTask(response.data.data.title); // Update the task list
+        setTitle(""); // Clear the input field
+        setError("");
+      } else {
+        setError(response.data.message);
       }
+    } catch (error) {
+      setError("Error creating task");
     }
   };
 

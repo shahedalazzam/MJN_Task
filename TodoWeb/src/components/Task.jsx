@@ -4,7 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineDone } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
-const Task = ({ task, onEditTask, onDeleteTask, onToggleCompleted }) => {
+const Task = ({ task, onEditTask, onDeleteTask, onToggleCompleted ,onAddTask}) => {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(task.title);
 
@@ -19,18 +19,18 @@ const Task = ({ task, onEditTask, onDeleteTask, onToggleCompleted }) => {
 
   const handleDone = () => {
     if (title.trim()) {
-      onEditTask(task.id, title.trim());
+      onEditTask(task._id, title.trim());
       setEditing(false);
     }
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
-    onDeleteTask(task.id);
+    onDeleteTask(task._id);
   };
 
   const handleToggleCompleted = () => {
-    onToggleCompleted(task.id);
+    onToggleCompleted(task._id);
   };
 
   const handleChange = (e) => {

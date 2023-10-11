@@ -58,7 +58,7 @@ exports.UpdateToDo = async (req, res) => {
     res.status(200).json({
       message: "Updated Item successfully",
       data: {
-        title: updatedToDo.title,
+        updatedToDo,
       },
     });
   } catch (error) {
@@ -66,19 +66,19 @@ exports.UpdateToDo = async (req, res) => {
   }
 };
 
-exports.GetToDoById = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const toDo = await ToDo.findById(id);
-    res.status(200).json({
-      data: {
-        toDo,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Cannot find the item" });
-  }
-};
+// exports.GetToDoById = async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const toDo = await ToDo.findById(id);
+//     res.status(200).json({
+//       data: {
+//         toDo,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(500).json({ error: "Cannot find the item" });
+//   }
+// };
 
 exports.MarkToDoAsComplete = async (req, res) => {
   const id = req.params.id;

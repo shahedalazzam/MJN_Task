@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Task from "./Task";
+import axios from "axios";
 
 const TaskList = ({ tasks, onEditTask, onDeleteTask, onToggleCompleted }) => {
-  const reversedTasks = tasks.slice().reverse();
+
   return (
     <ul className=" ">
-      {reversedTasks.map((task) => (
+      {tasks.map((task, index) => (
         <Task
-          key={task.id}
+          key={index}
           task={task}
           onEditTask={onEditTask}
           onDeleteTask={onDeleteTask}
