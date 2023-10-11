@@ -12,7 +12,7 @@ const toDoSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  // { timestamps: true }
 );
 
 const ToDo = mongoose.model("ToDo", toDoSchema);
