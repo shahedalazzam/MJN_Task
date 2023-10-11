@@ -64,14 +64,14 @@ const Task = ({ task, onEditTask, onDeleteTask, onToggleCompleted ,onAddTask}) =
           <div className=" flex items-center space-x-3">
             <input
               type="checkbox"
-              checked={task.completed}
+              checked={task.is_completed}
               onChange={handleToggleCompleted}
               className="round rounded-none"
             />
 
             <span
               className={` ${
-                task.completed
+                task.is_completed
                   ? "line-through text-gray-500 text-lg"
                   : "text-lg"
               } `}

@@ -64,13 +64,17 @@ function App() {
     }
   };
 
-  const toggleCompleted = (id) => {
+  const toggleCompleted = async (id) => {
+    try {
+      const response = await axios.patch(
+        `https://task-project-c6jd.onrender.com/item/updatemark/${id}`
+      );
+      console.log(response.data.data.updatedTodos);
+      setTasks(response.data.data.updatedTodos);
+    } catch (error) {
+      console.error("Error updating username:", error);
+    }
 
-
-
-
-
-    
     setTasks(
       tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
@@ -78,9 +82,7 @@ function App() {
     );
   };
 
-  const clearTasks = () => {
-    setTasks([]);
-  };
+
 
   const getCompletedTasks = () => tasks.filter((task) => task.completed);
   const getRemainingTasks = () => tasks.filter((task) => !task.completed);
@@ -139,7 +141,6 @@ function App() {
             <p className=" text-gray-500 px-2 py-3">
               {getRemainingTasks().length} tasks left
             </p>
-            <button onClick={clearTasks}>Clear all tasks</button>
           </div>
 
           {tasks.length ? (
