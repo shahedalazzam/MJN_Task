@@ -30,7 +30,7 @@ function App() {
       }
     };
     fetchTitleData();
-  }, []);
+  }, [tasks]);
 
   const addTask = (title) => {
     const newTask = { id: Date.now(), title, completed: false };
@@ -65,6 +65,12 @@ function App() {
   };
 
   const toggleCompleted = (id) => {
+
+
+
+
+
+    
     setTasks(
       tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
@@ -77,7 +83,7 @@ function App() {
   };
 
   const getCompletedTasks = () => tasks.filter((task) => task.completed);
-  // const getRemainingTasks = () => tasks.filter((task) => !task.completed);
+  const getRemainingTasks = () => tasks.filter((task) => !task.completed);
 
   const toggleTheme = () => {
     setDarkTheme((prevTheme) => !prevTheme);
@@ -131,8 +137,7 @@ function App() {
             } flex items-center justify-between text-gray-500 border-b`}
           >
             <p className=" text-gray-500 px-2 py-3">
-              {/* {getRemainingTasks().length}  */}
-              tasks left
+              {getRemainingTasks().length} tasks left
             </p>
             <button onClick={clearTasks}>Clear all tasks</button>
           </div>

@@ -84,18 +84,22 @@ exports.UpdateToDo = async (req, res) => {
 exports.MarkToDoAsComplete = async (req, res) => {
   const id = req.params.id;
   try {
+    const todo = await ToDo.findById(id);
+    const newIsCompletedValue = !todo.is_completed;
+
     await ToDo.updateOne(
       { _id: id },
       {
-        $set: { is_completed: true },
+        $set: { is_completed: newIsCompletedValue },
       }
     );
-    const updateTodo = await ToDo.findById(id);
+
+    const updatedTodos = await ToDo.find();
     res.status(200).json({
       data: {
-        updateTodo,
+        updatedTodos,
       },
-      message: "Todo Updated Successfully",
+      message: `Todo has been marked as ${newIsCompletedValue ? 'completed' : 'incomplete'}`,
     });
   } catch (error) {
     res.status(500).json({ error: "Cannot mark TODO item as complete" });

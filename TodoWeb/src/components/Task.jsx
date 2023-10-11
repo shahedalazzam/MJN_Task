@@ -18,10 +18,8 @@ const Task = ({ task, onEditTask, onDeleteTask, onToggleCompleted ,onAddTask}) =
   };
 
   const handleDone = () => {
-    // if (title.trim()) {
       onEditTask(task._id, title);
       setEditing(false);
-    // }
   };
 
   const handleDelete = (e) => {
