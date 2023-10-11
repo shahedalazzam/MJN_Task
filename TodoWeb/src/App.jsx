@@ -5,24 +5,22 @@ import { MdDarkMode, MdSunny } from "react-icons/md";
 import axios from "axios";
 
 function App() {
-
-
-
   const [tasks, setTasks] = useState([]);
   const [darkTheme, setDarkTheme] = useState(false);
-
 
   // const [title, setTitle] = useState([]);
 
   useEffect(() => {
     const fetchTitleData = async () => {
       try {
-        const response = await axios.get("https://task-project-c6jd.onrender.com/item/").catch((err) => {
-          if (err && err.response) {
-            console.log("first");
-            console.log("Error: ", err.response.data.error);
-          }
-        });
+        const response = await axios
+          .get("https://task-project-c6jd.onrender.com/item/")
+          .catch((err) => {
+            if (err && err.response) {
+              console.log("first");
+              console.log("Error: ", err.response.data.error);
+            }
+          });
 
         if (response && response.data) {
           setTasks(response.data.data.toDos);
@@ -34,37 +32,36 @@ function App() {
     fetchTitleData();
   }, []);
 
-
   const addTask = (title) => {
     const newTask = { id: Date.now(), title, completed: false };
     setTasks([...tasks, newTask]);
   };
 
-  const editTask = (id, title) => {
+  const editTask = async (id, title) => {
     try {
-      await axios.patch(`https://dream-wedding.onrender.com/admin/update/${userId}`, {
-        FullName: newFullName,
-
-      });
+      const response = await axios.patch(
+        `https://task-project-c6jd.onrender.com/item/update/${id}`,
+        {
+          title,
+        }
+      );
+      console.log(response.data.data.updatedToDos);
+      setTasks(response.data.data.updatedToDos);
     } catch (error) {
-      console.error('Error updating username:', error);
+      console.error("Error updating username:", error);
     }
-    
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, title } : task)));
-
   };
 
-  const deleteTask =async (id) => {
-
+  const deleteTask = async (id) => {
     try {
-      const response =await axios.delete(`https://task-project-c6jd.onrender.com/item/delete/${id}`);
-      setTasks(response.data.data.newToDos);
+      const response = await axios.delete(
+        `https://task-project-c6jd.onrender.com/item/delete/${id}`
+      );
+      console.log(response.data.data.newToDos);
+      // setTasks(response.data.data.newToDos);
     } catch (error) {
       console.log(error);
     }
-
-
-
   };
 
   const toggleCompleted = (id) => {
@@ -80,7 +77,7 @@ function App() {
   };
 
   const getCompletedTasks = () => tasks.filter((task) => task.completed);
-  const getRemainingTasks = () => tasks.filter((task) => !task.completed);
+  // const getRemainingTasks = () => tasks.filter((task) => !task.completed);
 
   const toggleTheme = () => {
     setDarkTheme((prevTheme) => !prevTheme);
@@ -134,7 +131,8 @@ function App() {
             } flex items-center justify-between text-gray-500 border-b`}
           >
             <p className=" text-gray-500 px-2 py-3">
-              {getRemainingTasks().length} tasks left
+              {/* {getRemainingTasks().length}  */}
+              tasks left
             </p>
             <button onClick={clearTasks}>Clear all tasks</button>
           </div>

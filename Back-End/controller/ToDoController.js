@@ -54,11 +54,12 @@ exports.UpdateToDo = async (req, res) => {
   const id = req.params.id;
   const { title } = req.body;
   try {
-    const updatedToDo = await ToDo.findByIdAndUpdate(id, { title }, { new: true });
+    await ToDo.findByIdAndUpdate(id, { title }, { new: true });
+    const updatedToDos = await ToDo.find()
     res.status(200).json({
       message: "Updated Item successfully",
       data: {
-        updatedToDo,
+        updatedToDos,
       },
     });
   } catch (error) {
