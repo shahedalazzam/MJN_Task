@@ -2,11 +2,12 @@ const ToDo = require("../models/ToDoModels");
 
 exports.CreateToDo = async (req, res) => {
   const { title } = req.body;
+  console.log('title ',title);
   try {
-    const toDoExists = await ToDo.findOne({ title });
-    if (toDoExists) {
-      return res.status(409).json({ message: "Name already exists" });
-    } else {
+    // const toDoExists = await ToDo.findOne({ title });
+    // if (toDoExists) {
+    //   return res.status(409).json({ message: "Name already exists" });
+    // } else {
       const toDoCreate = await ToDo.create({ title });
       res.status(201).json({
         message: "Successfully created Name",
@@ -14,9 +15,22 @@ exports.CreateToDo = async (req, res) => {
           title: toDoCreate.title,
         },
       });
-    }
+    // }
   } catch (error) {
     res.status(500).json({ error: "Cannot create Name" });
+  }
+};
+
+exports.GetToDo = async (req, res) => {
+  try {
+    const toDos = await ToDo.find();
+    res.status(200).json({
+      data: {
+        toDos,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Cannot find the items" });
   }
 };
 
@@ -33,19 +47,6 @@ exports.DeleteToDo = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Cannot delete Name" });
-  }
-};
-
-exports.GetToDo = async (req, res) => {
-  try {
-    const toDos = await ToDo.find();
-    res.status(200).json({
-      data: {
-        toDos,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Cannot find the items" });
   }
 };
 
