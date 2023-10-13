@@ -63,20 +63,38 @@ const TodoList = () => {
 
   const editTask = (index) => {
     setEditIndex(index);
-    setEditTaskText(tasks[index]);
+    setEditTaskText(tasks[index].title);
     setEditMode(true);
   };
 
-  const updateTask = () => {
+  const updateTask =async (taskId) => {
     if (editTaskText && editIndex !== null) {
-      const updatedTasks = [...tasks];
-      updatedTasks[editIndex] = editTaskText;
-      setTasks(updatedTasks);
+
+
+      const response = await axios.patch(
+        `https://task-project-c6jd.onrender.com/item/update/${taskId}`,
+        {
+          title:editTaskText,
+        }
+      );
+      console.log(response.data.data.updatedToDos);
+      setTasks(response.data.data.updatedToDos);
       setEditIndex(null);
       setEditTaskText("");
       setEditMode(false);
     }
   };
+
+  // const updateTask = () => {
+  //   if (editTaskText && editIndex !== null) {
+  //     const updatedTasks = [...tasks];
+  //     updatedTasks[editIndex] = editTaskText;
+  //     setTasks(updatedTasks);
+  //     setEditIndex(null);
+  //     setEditTaskText("");
+  //     setEditMode(false);
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -103,7 +121,7 @@ const TodoList = () => {
                   value={editTaskText}
                   onChangeText={(text) => setEditTaskText(text)}
                 />
-                <TouchableOpacity style={styles.button} onPress={updateTask}>
+                <TouchableOpacity style={styles.button} onPress={()=>updateTask(item._id)}>
                   <Icon name="check" size={23} color="#9F45FF" />
                 </TouchableOpacity>
               </View>
