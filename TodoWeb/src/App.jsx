@@ -57,8 +57,6 @@ function App() {
       const response = await axios.delete(
         `https://task-project-c6jd.onrender.com/item/delete/${id}`
       );
-      console.log(response.data.data.newToDos);
-      // setTasks(response.data.data.newToDos);
     } catch (error) {
       console.log(error);
     }

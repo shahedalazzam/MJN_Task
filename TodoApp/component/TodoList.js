@@ -55,10 +55,10 @@ const TodoList = () => {
     }
   };
 
-  const removeTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
+  const removeTask =async (itemId) => {
+    const response = await axios.delete(
+      `https://task-project-c6jd.onrender.com/item/delete/${itemId}`
+    );
   };
 
   const editTask = (index) => {
@@ -125,7 +125,7 @@ const TodoList = () => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.button}
-                    onPress={() => removeTask(index)}
+                    onPress={() => removeTask(item._id)}
                   >
                     <Icon name="trash" size={22} color="#9F45FF" />
                   </TouchableOpacity>
