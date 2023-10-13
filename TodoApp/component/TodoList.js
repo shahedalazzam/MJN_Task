@@ -42,12 +42,16 @@ const TodoList = () => {
     fetchTitleData();
   }, [tasks]);
 
-
-
-  const addTask = () => {
+  const addTask = async () => {
     if (taskText) {
-      setTasks([...tasks, taskText]);
-      setTaskText("");
+      const response = await axios.post(
+        "https://task-project-c6jd.onrender.com/item/add",
+        { title: taskText }
+      );
+      if (response.status === 201) {
+        setTasks([...tasks, taskText]);
+        setTaskText("");
+      }
     }
   };
 
@@ -174,7 +178,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   add: {
-    alignItems:'center',
+    alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "#9F45FF",
