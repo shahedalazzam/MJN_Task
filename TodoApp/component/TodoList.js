@@ -55,7 +55,7 @@ const TodoList = () => {
     }
   };
 
-  const removeTask =async (itemId) => {
+  const removeTask = async (itemId) => {
     const response = await axios.delete(
       `https://task-project-c6jd.onrender.com/item/delete/${itemId}`
     );
@@ -67,17 +67,14 @@ const TodoList = () => {
     setEditMode(true);
   };
 
-  const updateTask =async (taskId) => {
+  const updateTask = async (taskId) => {
     if (editTaskText && editIndex !== null) {
-
-
       const response = await axios.patch(
         `https://task-project-c6jd.onrender.com/item/update/${taskId}`,
         {
-          title:editTaskText,
+          title: editTaskText,
         }
       );
-      console.log(response.data.data.updatedToDos);
       setTasks(response.data.data.updatedToDos);
       setEditIndex(null);
       setEditTaskText("");
@@ -85,16 +82,14 @@ const TodoList = () => {
     }
   };
 
-  // const updateTask = () => {
-  //   if (editTaskText && editIndex !== null) {
-  //     const updatedTasks = [...tasks];
-  //     updatedTasks[editIndex] = editTaskText;
-  //     setTasks(updatedTasks);
-  //     setEditIndex(null);
-  //     setEditTaskText("");
-  //     setEditMode(false);
-  //   }
-  // };
+  const onCheckboxChange = async (value, itemId) => {
+    const response = await axios.patch(
+      `https://task-project-c6jd.onrender.com/item/updatemark/${itemId}`
+    );
+
+    console.log("Item ID:", value);
+    setTasks(response.data.data.updatedTodos);
+  };
 
   return (
     <View style={styles.container}>
@@ -121,17 +116,19 @@ const TodoList = () => {
                   value={editTaskText}
                   onChangeText={(text) => setEditTaskText(text)}
                 />
-                <TouchableOpacity style={styles.button} onPress={()=>updateTask(item._id)}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => updateTask(item._id)}
+                >
                   <Icon name="check" size={23} color="#9F45FF" />
                 </TouchableOpacity>
               </View>
             ) : (
               <View style={styles.taskText}>
                 <Checkbox
-                  style={styles.checkbox}
-                  value={isChecked}
-                  onValueChange={setChecked}
-                  color={isChecked ? "#4630EB" : undefined}
+                  value={item.is_completed}
+                  onValueChange={(value) => onCheckboxChange(value, item._id)}
+                  color={item.is_completed ? "#4630EB" : undefined}
                 />
                 <Text style={styles.edinput}>{item.title}</Text>
                 <View style={styles.buttons}>
