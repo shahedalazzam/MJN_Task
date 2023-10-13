@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Checkbox from "expo-checkbox";
 import {
   View,
@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import axios from "axios";
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
@@ -18,6 +19,30 @@ const TodoList = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [editTaskText, setEditTaskText] = useState("");
   const [isChecked, setChecked] = useState(false);
+
+  useEffect(() => {
+    const fetchTitleData = async () => {
+      try {
+        const response = await axios
+          .get("https://task-project-c6jd.onrender.com/item/")
+          .catch((err) => {
+            if (err && err.response) {
+              console.log("first");
+              console.log("Error: ", err.response.data.error);
+            }
+          });
+
+        if (response && response.data) {
+          setTasks(response.data.data.toDos);
+        }
+      } catch (error) {
+        console.error("Error fetching item data:", error);
+      }
+    };
+    fetchTitleData();
+  }, [tasks]);
+
+
 
   const addTask = () => {
     if (taskText) {
@@ -86,7 +111,7 @@ const TodoList = () => {
                   onValueChange={setChecked}
                   color={isChecked ? "#4630EB" : undefined}
                 />
-                <Text style={styles.edinput}>{item}</Text>
+                <Text style={styles.edinput}>{item.title}</Text>
                 <View style={styles.buttons}>
                   <TouchableOpacity
                     style={styles.button}
@@ -94,8 +119,6 @@ const TodoList = () => {
                   >
                     <Icon name="edit" size={22} color="#9F45FF" />
                   </TouchableOpacity>
-
-                  {/* style={styles.button} onPress={() => editTask(index) */}
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => removeTask(index)}
@@ -151,7 +174,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   add: {
-    alignItems: "center",
+    alignItems:'center',
+    justifyContent: "center",
     borderWidth: 2,
     borderColor: "#9F45FF",
     width: windowWidth * 0.2,
