@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Checkbox from "expo-checkbox";
 import {
   View,
   Text,
@@ -16,6 +17,7 @@ const TodoList = () => {
   const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [editTaskText, setEditTaskText] = useState("");
+  const [isChecked, setChecked] = useState(false);
 
   const addTask = () => {
     if (taskText) {
@@ -78,6 +80,12 @@ const TodoList = () => {
               </View>
             ) : (
               <View style={styles.taskText}>
+                <Checkbox
+                  style={styles.checkbox}
+                  value={isChecked}
+                  onValueChange={setChecked}
+                  color={isChecked ? "#4630EB" : undefined}
+                />
                 <Text style={styles.edinput}>{item}</Text>
                 <View style={styles.buttons}>
                   <TouchableOpacity
@@ -86,6 +94,8 @@ const TodoList = () => {
                   >
                     <Icon name="edit" size={22} color="#9F45FF" />
                   </TouchableOpacity>
+
+                  {/* style={styles.button} onPress={() => editTask(index) */}
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => removeTask(index)}
@@ -166,7 +176,7 @@ const styles = StyleSheet.create({
   edinput: {
     paddingLeft: 5,
     paddingRight: 15,
-    width: windowWidth * 0.67,
+    width: windowWidth * 0.63,
   },
 });
 
